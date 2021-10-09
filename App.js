@@ -9,9 +9,9 @@ import {
   View,
   Image,
 } from "react-native";
-import HomeScreen from "./src/pages/HomeScreen";
-import InsertBookScreen from "./src/pages/InsertBookScreen";
-import ItemPage from "./src/pages/ItemPage";
+import HomeScreen_A from "./src/pages/HomeScreen_A";
+import InsertBookScreen_A from "./src/pages/InsertBookScreen_A";
+import ItemPage_A from "./src/pages/ItemPage_A";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -28,10 +28,10 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Insert Book" component={InsertBookScreen} />
-        <Stack.Screen name="Home2" component={HomeScreen2} />
-        <Stack.Screen name="Item" component={ItemPage} />
+        <Stack.Screen name="Home_A" component={HomeScreen_A} />
+        <Stack.Screen name="Insert Book_A" component={InsertBookScreen_A} />
+        <Stack.Screen name="Home2_A" component={HomeScreen2} />
+        <Stack.Screen name="Item_A" component={ItemPage_A} />
       </Stack.Navigator>
     </NavigationContainer>
   );
