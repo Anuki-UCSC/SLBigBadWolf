@@ -15,6 +15,12 @@ import ItemPage_A from "./src/pages/ItemPage_A";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import HomeScreen from "./src/pages/HomeScreen";
+import ItemScreen from "./src/pages/ItemScreen";
+import ProfileScreen from "./src/pages/ProfileScreen";
+import EditProfileScreen from "./src/pages/EditProfileScreen";
+import MyLibrary from "./src/pages/MyLibrary";
+
 function HomeScreen2() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -27,11 +33,38 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#DE5555",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      >
+        <Stack.Screen name="My Library" component={MyLibrary} />
+        <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ title: "My Profile" }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "SLBigBadWolf" }}
+        />
         <Stack.Screen name="Home_A" component={HomeScreen_A} />
         <Stack.Screen name="Insert Book_A" component={InsertBookScreen_A} />
         <Stack.Screen name="Home2_A" component={HomeScreen2} />
         <Stack.Screen name="Item_A" component={ItemPage_A} />
+        <Stack.Screen
+          name="Item"
+          component={ItemScreen}
+          options={({ route }) => ({ title: route.params.name })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
