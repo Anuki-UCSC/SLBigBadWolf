@@ -1,12 +1,37 @@
-import React from "react";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Zocial } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import axios from "axios";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
+  const [profiledata, setProfiledata] = useState([]);
+  const [id, setId] = useState(18688);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://madminiproject-13d9e-default-rtdb.firebaseio.com/users/${id}.json`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setProfiledata(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <View>
       <View>
@@ -28,31 +53,43 @@ export default function ProfileScreen() {
       <View style={styles.detailsview}>
         <View style={styles.detail}>
           <Ionicons name="person" size={24} color="#DE5555" />
-          <Text style={styles.detailtext}>Anuki De Alwis</Text>
+          <Text style={styles.detailtext}>{profiledata.name}</Text>
         </View>
         <View style={styles.detail}>
           <Zocial name="email" size={24} color="#DE5555" />
-          <Text style={styles.detailtext}>anugaya.alwis@gmail.com</Text>
+          <Text style={styles.detailtext}>{profiledata.email}</Text>
         </View>
         <View style={styles.detail}>
           <Fontisto name="phone" size={24} color="#DE5555" />
-          <Text style={styles.detailtext}>0772211333</Text>
+          <Text style={styles.detailtext}>
+            {!profiledata.phonenumber
+              ? "No phone number added"
+              : profiledata.phonenumber}
+          </Text>
         </View>
         <View style={styles.detail}>
           <MaterialIcons name="location-pin" size={24} color="#DE5555" />
           <Text style={styles.detailtext}>
-            Rathna Mawatha, Makumbura,Kottawa
+            {!profiledata.address ? "No address" : profiledata.address}
           </Text>
         </View>
       </View>
       <View style={styles.info}>
         <View style={styles.boxinfo}>
-          <FontAwesome name="heart" size={24} color="#DE5555" />
-          <Text style={styles.infotext}>My Library</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("My Library")}>
+            <View style={styles.boxinfotouch}>
+              <FontAwesome name="heart" size={24} color="#DE5555" />
+              <Text style={styles.infotext}>My Library</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.boxinfo}>
-          <FontAwesome name="list" size={24} color="#DE5555" />
-          <Text style={styles.infotext}>Categories</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Edit Profile")}>
+            <View style={styles.boxinfotouch}>
+              <Entypo name="edit" size={24} color="#DE5555" />
+              <Text style={styles.infotext}>Edit Profile</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -99,6 +136,9 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightColor: "#DE5555",
     borderLeftColor: "#DE5555",
+  },
+  boxinfotouch: {
+    alignItems: "center",
   },
   infotext: {
     fontSize: 17,

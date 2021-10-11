@@ -20,6 +20,8 @@ import ItemScreen from "./src/pages/ItemScreen";
 import ProfileScreen from "./src/pages/ProfileScreen";
 import EditProfileScreen from "./src/pages/EditProfileScreen";
 import MyLibrary from "./src/pages/MyLibrary";
+import SignInScreen from "./src/pages/SignInScreen";
+import SignUpScreen from "./src/pages/SignUpScreen";
 
 function HomeScreen2() {
   return (
@@ -44,7 +46,6 @@ function App() {
           },
         }}
       >
-        <Stack.Screen name="My Library" component={MyLibrary} />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
         <Stack.Screen
           name="Profile"
@@ -52,10 +53,23 @@ function App() {
           options={{ title: "My Profile" }}
         />
         <Stack.Screen
+          name="sign up"
+          component={SignUpScreen}
+          options={{ header: () => null }}
+        />
+        <Stack.Screen
           name="Home"
           component={HomeScreen}
           options={{ title: "SLBigBadWolf" }}
         />
+
+        <Stack.Screen name="My Library" component={MyLibrary} />
+        <Stack.Screen
+          name="sign in"
+          component={SignInScreen}
+          options={{ header: () => null }}
+        />
+
         <Stack.Screen name="Home_A" component={HomeScreen_A} />
         <Stack.Screen name="Insert Book_A" component={InsertBookScreen_A} />
         <Stack.Screen name="Home2_A" component={HomeScreen2} />

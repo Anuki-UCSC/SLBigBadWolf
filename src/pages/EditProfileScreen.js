@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Image,
@@ -14,12 +14,56 @@ import { Zocial } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function EditProfileScreen() {
+export default function EditProfileScreen({ navigation }) {
+  const [profiledata, setProfiledata] = useState([]);
+  const [id, setId] = useState(18688);
   const [name, setName] = useState("Anuki De Alwis");
   const [email, setEmail] = useState("anugaya.alwis@gmail.com");
   const [phonenumber, setPhonenumber] = useState("0772211333");
   const [address, setAddress] = useState("Rathna Mawatha, Makumbura,Kottawa");
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://madminiproject-13d9e-default-rtdb.firebaseio.com/users/${id}.json`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setProfiledata(res.data);
+        !res.data.name ? setName("") : setName(res.data.name);
+        !res.data.email ? setEmail("") : setEmail(res.data.email);
+        !res.data.phonenumber
+          ? setPhonenumber("")
+          : setPhonenumber(res.data.phonenumber);
+        !res.data.address ? setAddress("") : setAddress(res.data.address);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const onUpdate = () => {
+    const data = {
+      name: name,
+      email: email,
+      phonenumber: phonenumber,
+      address: address,
+    };
+    axios
+      .patch(
+        `https://madminiproject-13d9e-default-rtdb.firebaseio.com/users/${id}.json`,
+        data
+      )
+      .then((res) => {
+        console.log(res);
+        navigation.navigate("Profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <View>
       <View>
@@ -41,13 +85,19 @@ export default function EditProfileScreen() {
       <View style={styles.detailsview}>
         <View style={styles.detail}>
           <Ionicons name="person" size={24} color="#DE5555" />
-          <TextInput style={styles.detailtextInput} name="name" value={name} />
+          <TextInput
+            style={styles.detailtextInput}
+            name="name"
+            onChangeText={setName}
+            value={name}
+          />
         </View>
         <View style={styles.detail}>
           <Zocial name="email" size={24} color="#DE5555" />
           <TextInput
             style={styles.detailtextInput}
             name="email"
+            onChangeText={setEmail}
             value={email}
           />
         </View>
@@ -56,7 +106,9 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.detailtextInput}
             name="phonenumber"
+            onChangeText={setPhonenumber}
             value={phonenumber}
+            placeholder="add phone number here!"
           />
         </View>
         <View style={styles.detail}>
@@ -64,10 +116,12 @@ export default function EditProfileScreen() {
           <TextInput
             style={styles.detailtextInput}
             name="address"
+            onChangeText={setAddress}
             value={address}
+            placeholder="add your address here!"
           />
         </View>
-        <TouchableOpacity style={styles.ButtonUpdate}>
+        <TouchableOpacity onPress={onUpdate} style={styles.ButtonUpdate}>
           <Text style={{ fontSize: 17, color: "#fff", fontWeight: "bold" }}>
             Update
           </Text>

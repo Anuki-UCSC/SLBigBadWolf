@@ -11,22 +11,52 @@ import { FontAwesome } from "@expo/vector-icons";
 
 export default function ItemScreen({ navigation, route }) {
   const { item_id, itemData, name } = route.params;
+  let rateing = 0;
   return (
     <View>
       <ScrollView>
         <View style={styles.ashBox}>
           <View style={styles.box1}>
-            <Text style={styles.bookTitle}>
-              {name} {name}
+            <Text style={styles.bookTitle}>{name}</Text>
+            <Text style={styles.autorName}>Autor : {itemData.author}</Text>
+            {/* <Text style={styles.categoryNames}>Fiction, Children, Fantacy</Text> */}
+            <Text style={styles.categoryNames}>
+              {itemData.categories.map((item, index) => (
+                <Text key={Object.values(item)}>
+                  {index != 0 ? <Text>, </Text> : <Text></Text>}
+                  {Object.values(item)}{" "}
+                </Text>
+              ))}
             </Text>
-            <Text style={styles.autorName}>Autor : J K Rowling</Text>
-            <Text style={styles.categoryNames}>Fiction, Children, Fantacy</Text>
             <View style={styles.rating}>
-              <FontAwesome name="star" size={23} color="goldenrod" />
-              <FontAwesome name="star" size={23} color="goldenrod" />
-              <FontAwesome name="star" size={23} color="goldenrod" />
-              <FontAwesome name="star" size={23} color="goldenrod" />
-              <Text style={styles.ratingnumber}>(4.3)</Text>
+              {itemData.rating / 20 < 1 ? (
+                <FontAwesome name="star" size={23} color="goldenrod" />
+              ) : (
+                <Text></Text>
+              )}
+              {itemData.rating / 20 > 1 ? (
+                <FontAwesome name="star" size={23} color="goldenrod" />
+              ) : (
+                <Text></Text>
+              )}
+              {itemData.rating / 20 > 2 ? (
+                <FontAwesome name="star" size={23} color="goldenrod" />
+              ) : (
+                <Text></Text>
+              )}
+              {itemData.rating / 20 > 3 ? (
+                <FontAwesome name="star" size={23} color="goldenrod" />
+              ) : (
+                <Text></Text>
+              )}
+              {itemData.rating / 20 > 4 ? (
+                <FontAwesome name="star" size={23} color="goldenrod" />
+              ) : (
+                <Text></Text>
+              )}
+              <Text style={styles.ratingnumber}>
+                ({(itemData.rating / 20).toFixed(1)})
+              </Text>
             </View>
             <TouchableOpacity style={styles.buttonwrap}>
               <View style={styles.buttonAddToLibrary}>
@@ -47,16 +77,21 @@ export default function ItemScreen({ navigation, route }) {
         </View>
         <View style={styles.descBox}>
           <Text style={styles.topicbold}>Description</Text>
-          <Text>
-            Harry Potter is a series of seven fantasy novels written by British
-            author J. K. Rowling. The novels chronicle the lives of a young
-            wizard, Harry Potter, and his friends Hermione Granger and Ron
-            Weasley, all of whom are students at Hogwarts School of Witchcraft
-            and Wizardry. An irresistible new edition of Harry Potter and the
-            Philosopher's Stone created with ultra-talented designers MinaLima,
-            the design magicians behind the gorgeous visual graphic style of the
-            Harry Potter and Fantastic Beasts films.
-          </Text>
+          {itemData.description.length < 10 ? (
+            <Text>
+              Harry Potter is a series of seven fantasy novels written by
+              British author J. K. Rowling. The novels chronicle the lives of a
+              young wizard, Harry Potter, and his friends Hermione Granger and
+              Ron Weasley, all of whom are students at Hogwarts School of
+              Witchcraft and Wizardry. An irresistible new edition of Harry
+              Potter and the Philosopher's Stone created with ultra-talented
+              designers MinaLima, the design magicians behind the gorgeous
+              visual graphic style of the Harry Potter and Fantastic Beasts
+              films.
+            </Text>
+          ) : (
+            <Text>{itemData.description}</Text>
+          )}
 
           <View style={{ marginTop: 20 }}>
             <Text style={styles.topicbold}>Reviews (4)</Text>

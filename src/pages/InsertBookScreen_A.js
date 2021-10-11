@@ -12,8 +12,8 @@ export default function InsertBookScreen() {
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [img, setImg] = useState("");
-  const [offer, setOffer] = useState("");
-  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [isInMyLibrary, setIsInMyLibrary] = useState(false);
   const [rating, setRating] = useState("");
   const uniqueRandomid = uniqueRandom(1, 10000);
 
@@ -24,16 +24,17 @@ export default function InsertBookScreen() {
       name: name,
       author: author,
       img: img,
-      offer: offer,
-      price: price,
+      description: description,
+      isInMyLibrary: isInMyLibrary,
       rating: rating,
       id: id,
     };
     console.log("Submitted", data);
 
+    // `https://reacttaskmanager-6968e-default-rtdb.firebaseio.com/bookdata/${id}.json`
     axios
       .put(
-        `https://reacttaskmanager-6968e-default-rtdb.firebaseio.com/bookdata/${id}.json`,
+        `https://madminiproject-13d9e-default-rtdb.firebaseio.com/books/${id}.json`,
         data
       )
       .then((res) => {
@@ -41,8 +42,8 @@ export default function InsertBookScreen() {
         setName("");
         setAuthor("");
         setImg("");
-        setOffer("");
-        setPrice("");
+        setDescription("");
+        setIsInMyLibrary(false);
         setRating("");
       })
       .catch((err) => console.log(err));
@@ -50,79 +51,72 @@ export default function InsertBookScreen() {
 
   return (
     <>
-      <Text style={styles.topic}>Insert Book Screen</Text>
-      <View style={styles.formbody}>
-        <View>
-          <Text style={styles.textinputlabel}>Name</Text>
+      <View style={styles.container}>
+        <Text style={styles.topic}>Insert Book Screen</Text>
+        <View style={styles.formbody}>
           <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setName}
-              value={name}
-              placeholder="Book name"
+            <Text style={styles.textinputlabel}>Name</Text>
+            <View>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={setName}
+                value={name}
+                placeholder="Book name"
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textinputlabel}>Author</Text>
+            <View>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={setAuthor}
+                value={author}
+                placeholder="Author"
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textinputlabel}>Image</Text>
+            <View>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={setImg}
+                value={img}
+                placeholder="Image url"
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textinputlabel}>Rating</Text>
+            <View>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={setRating}
+                value={rating}
+                placeholder="Rating"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textinputlabel}>Description</Text>
+            <View>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={setDescription}
+                value={description}
+                placeholder="description"
+              />
+            </View>
+          </View>
+          <View style={styles.Buttondiv}>
+            <Button
+              onPress={onPressSubmitform}
+              title="Sumbit"
+              color="#841584"
             />
           </View>
-        </View>
-        <View>
-          <Text style={styles.textinputlabel}>Author</Text>
-          <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setAuthor}
-              value={author}
-              placeholder="Author"
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textinputlabel}>Image</Text>
-          <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setImg}
-              value={img}
-              placeholder="Image url"
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textinputlabel}>Price</Text>
-          <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setPrice}
-              value={price}
-              placeholder="Price"
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textinputlabel}>Rating</Text>
-          <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setRating}
-              value={rating}
-              placeholder="Rating"
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textinputlabel}>Offer</Text>
-          <View>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={setOffer}
-              value={offer}
-              placeholder="Offer"
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-        <View style={styles.Buttondiv}>
-          <Button onPress={onPressSubmitform} title="Sumbit" color="#841584" />
         </View>
       </View>
     </>
@@ -130,6 +124,9 @@ export default function InsertBookScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+  },
   topic: {
     color: "#ff0000",
     fontSize: 20,

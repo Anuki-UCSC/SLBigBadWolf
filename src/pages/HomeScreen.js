@@ -14,9 +14,10 @@ import {
 export default function HomeScreen({ navigation }) {
   const [books, setBooks] = useState([]);
   useEffect(() => {
+    // https://reacttaskmanager-6968e-default-rtdb.firebaseio.com/books.json
     axios
       .get(
-        "https://reacttaskmanager-6968e-default-rtdb.firebaseio.com/books.json"
+        "https://madminiproject-13d9e-default-rtdb.firebaseio.com/books.json"
       )
       .then((res) => {
         setBooks(Object.values(res.data));
